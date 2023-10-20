@@ -1,0 +1,94 @@
+#!/bin/bash
+cantidad(){
+	echo "${#arreglo[@]}"
+}
+verArchivos(){
+	echo "${arreglo[@]}"
+}
+existe(){
+	if [ $# -eq 0 ]; then
+		echo "cantidad de parametros erroneos"
+		return 1
+	fi
+	if [ "$1" != "*.conf" ]; then
+		echo " el parametro no termina en .conf"
+		return 2
+	fi
+	if ! [ -f "$1" ]; then
+		echo " el parametro no es un archivo"
+		return 3
+	fi
+	for ((i=0;i<"{#arreglo[@]}";i++));do
+		if [ "$1" == "$arreglo[$i]" ];then
+			echo "{$arreglo[$i]}"
+			return 0
+		fi
+	done
+	return 4
+}
+eliminar(){
+	if [ "$#" -lt 2 ]; then
+		echo "cantidad de parametros erroneos"
+		return 5
+	fi
+	if [ "$1" != "*.conf" ]; then
+		echo " el parametro no termina en .conf"
+		return 6
+	fi
+	if ! [ -f "$1" ]; then
+		echo " el parametro no es un archivo"
+		return 7
+	fi
+	if [ "$2" != "logico" ] && [ "$2" != "fisico" ]; then
+		echo " el segundo parametro no determina el tipo de borrado "
+		return 8
+	fi
+	existe "$1"
+	if [ $? -ne 0 ];then
+		return 9
+	fi 
+	for ((i=0;i<"{#arreglo[@]}";i++));do
+		if [ "$1" == "$arreglo["$i"]" ];then
+			let indice="$i"
+			break;
+		fi
+	done
+	dir=$(find /etc/ -type f -name "$1")
+	unset arreglo[$indice]
+	arreglo=$("${arreglo[@]}");
+	if [ "$2" == "logico" ];then
+		return 0
+	fi
+	rm "$dir"
+	return 0
+}
+
+arreglo=()
+for archivo in $(ls /etc/ | grep "*.conf"); do
+	if [ -f "$archivo" ]; then
+		 arreglo+=("$archivo")
+	fi
+done
+select op in "cantidad" "verArchivos" "existe" "eliminar" "salir" ;do
+	case $op in
+		"cantidad")
+			cantidad
+		;;
+		"verArchivos")
+			verArchivos
+		;;
+		"existe")
+			echo " ingrese un archivo terminado en .conf"
+			read a
+			existe "$a"
+		;;
+		"eliminar")
+			echo " ingrese un archivo que desee borrar y el tipo de borrado "
+			read a b
+			eliminar "$a" "$b"
+		;;
+		"salir")
+			exit 0;
+		;;
+	esac
+done
