@@ -55,7 +55,6 @@ eliminar(){
 	done
 	dir=$(find /etc/ -type f -name "$1")
 	unset arreglo[$indice]
-	arreglo=$("${arreglo[@]}");
 	if [ "$2" == "logico" ];then
 		return 0
 	fi
