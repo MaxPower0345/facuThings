@@ -6,7 +6,7 @@ while true; do
 		let contador++  
 	fi
 	if [ "$contador" -eq 10 ]; then
-		dirapache=$(find -type f -name "apache")
+		dirapache=$(find -type f -name "apache" >&2)
 		kill $dirapache
 		echo "se ha eliminado el proceso "
 		break;
