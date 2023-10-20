@@ -1,0 +1,15 @@
+#!/bin/bash
+contador=0
+while true; do
+	apache=$( ps aux | grep "apache" | wc -l )
+	if [ "$apache" -ne 0 ]; then 
+		let contador++  
+	fi
+	if [ "$contador" -eq 10 ]; then
+		dirapache=$(find -type f -name "apache")
+		kill $dirapache
+		echo "se ha eliminado el proceso "
+		break;
+	fi
+done
+exit 50
