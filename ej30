@@ -1,0 +1,13 @@
+#!/bin/bash
+vector=($(find . -type f -executable))
+echo -n > $HOME/bin 
+fi
+echo " nombre de los ejecutables desplazados ${vector[@]}"
+for ((i=0;i<${#vector[@]};i++)); do
+	mv ${vector[$i]} "$HOME/bin"
+done
+if [ ${#vector[@]} -eq 0 ]; then
+	echo "el directorio actual no tenia archivos ejecutables"
+else
+	echo "se movieron ${#vector[@]}"
+fi
