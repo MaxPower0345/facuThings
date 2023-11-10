@@ -1,0 +1,133 @@
+
+package ar.edu.unlp.info.oo1.ejercicio2;
+
+public abstract class Cliente {
+	private String nombre;
+	private String direccion;
+	private Integer numero;
+
+	protected Cliente(String nombre, String direccion, Integer numero) {
+		this.nombre=nombre;
+		this.direccion=direccion;
+		this.numero=numero;
+	}
+	public Integer descuento() {
+		return 0;
+	}
+}
+package ar.edu.unlp.info.oo1.ejercicio2;
+
+import java.time.LocalDate;
+
+public class Facturas {
+	private LocalDate fechaInicio;
+	private LocalDate fechaFin;
+	private LocalDate fechaFacturacion;
+	private Double montoTotal;
+	private Integer numero;
+	
+	public Facturas(LocalDate fechaInicio,LocalDate fechaFin,Integer numero) {
+		this.fechaInicio=fechaInicio;
+		this.fechaFin=fechaFin;
+		this.fechaFacturacion=LocalDate.now();
+		this.montoTotal=0.0;
+		this.numero=numero;
+	}
+}
+package ar.edu.unlp.info.oo1.ejercicio2;
+
+import java.time.LocalDate;
+
+public abstract class Llamada {
+	protected LocalDate fecha;
+	protected LocalDate horaComienzo;
+	protected Integer duracionMinutos;
+	protected Integer numeroEmisor;
+	protected Integer numeroReceptor;
+	
+	protected Llamada(LocalDate fecha,LocalDate horaComienzo,Integer duracionMinutos,Integer numeroReceptor,Integer numeroRecepetor) {
+		this.fecha=fecha;
+		this.horaComienzo=horaComienzo;
+		this.duracionMinutos=duracionMinutos;
+		this.numeroEmisor=numeroEmisor;
+		this.numeroReceptor=numeroRecepetor;
+	}
+	public Double costoPorMinuto() {
+		return 0.0;
+	}
+}
+package ar.edu.unlp.info.oo1.ejercicio2;
+
+import java.time.LocalDate;
+
+public class LlamadaInternacional extends Llamada{
+	private String paisOrigen;
+	private String paisDestino;
+	
+	public LlamadaInternacional(LocalDate fecha,LocalDate horaComienzo,Integer duracion,Integer numeroEmisor,Integer numeroReceptor,String paisOrigen,String paisDestino) {
+		super(fecha,horaComienzo,duracion,numeroEmisor,numeroReceptor);
+		this.paisOrigen=paisOrigen;
+		this.paisDestino=paisDestino;
+	}
+	
+}
+package ar.edu.unlp.info.oo1.ejercicio2;
+
+import java.time.LocalDate;
+
+public class LlamadaInterurbana extends Llamada{
+	private Double distanciaEmisor;
+	private Double distanciaReceptor;
+	
+	public LlamadaInterurbana(LocalDate fecha,LocalDate horaComienzo,Integer duracion,Integer numeroEmisor,Integer numeroReceptor,Double distanciaEmisor,Double distanciaReceptor) {
+		super(fecha,horaComienzo,duracion,numeroEmisor,numeroReceptor);
+		this.distanciaEmisor=distanciaEmisor;
+		this.distanciaReceptor=distanciaReceptor;
+	}
+	public Double costoPorMinuto(){
+		Double monto=5.0;
+		Double diferencia=distanciaEmisor-distanciaReceptor;
+		if (diferencia<0) {
+			diferencia*=-1;
+		}
+		if(diferencia<100.0) {
+			monto+=2.0*duracionMinutos;
+		}
+		return monto;
+	}
+}
+package ar.edu.unlp.info.oo1.ejercicio2;
+
+import java.time.LocalDate;
+
+public class LlamadaLocal extends Llamada {
+
+	public LlamadaLocal(LocalDate fecha,LocalDate horaComienzo,Integer duracion,Integer numeroEmisor,Integer numeroReceptor) {
+		super(fecha, horaComienzo, duracion, numeroReceptor, numeroReceptor);
+	}
+}
+package ar.edu.unlp.info.oo1.ejercicio2;
+
+public class PersonaFisica extends Cliente {
+	private Integer DNI;
+	
+	public PersonaFisica(String nombre, String direccion, Integer numero, Integer DNI) {
+		super(nombre,direccion,numero);
+		this.DNI=DNI;
+	}
+	public Integer descuento() {
+		return 10;
+	}
+}
+package ar.edu.unlp.info.oo1.ejercicio2;
+
+public class PersonaJuridica extends Cliente {
+	private Integer CUIT;
+	private String tipoPersonaJuridica;
+	
+	public PersonaJuridica(String nombre, String direccion, Integer numero, Integer CUIT,String tipo) {
+		super(nombre, direccion, numero);
+		this.CUIT=CUIT;
+		this.tipoPersonaJuridica=tipo;
+	}
+}
